@@ -2,7 +2,7 @@
 
 # CoreCoder
 
-**编程 agent 里的 nanoGPT。1.3k 行引擎、整包 2816 行纯 Python 全部一口气可读，读懂一个 coding agent 到底怎么运作，再 fork 出你自己的。**
+**编程 agent 里的 nanoGPT。1.6k 行引擎、整包 3241 行纯 Python 全部一口气可读，读懂一个 coding agent 到底怎么运作，再 fork 出你自己的。**
 
 *learn from it · fork it · ship something better*
 
@@ -12,7 +12,7 @@
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tests](https://github.com/he-yufeng/CoreCoder/actions/workflows/ci.yml/badge.svg)](https://github.com/he-yufeng/CoreCoder/actions)
-[![engine](https://img.shields.io/badge/engine-1322_LoC-blue)](article/)
+[![engine](https://img.shields.io/badge/engine-1605_LoC-blue)](article/)
 [![源码导读](https://img.shields.io/badge/源码导读-8篇双语-orange)](article/)
 
 </div>
@@ -25,7 +25,7 @@
 
 | | CoreCoder | Claude Code | aider | nanoGPT |
 |---|---|---|---|---|
-| 代码量 | 引擎约 1322 行 / 整包 2816 行 | 几十万行（闭源） | 数万行 Python | 约 600 行（两个文件） |
+| 代码量 | 引擎约 1605 行 / 整包 3241 行 | 几十万行（闭源） | 数万行 Python | 约 600 行（两个文件） |
 | 读完要多久 | 一个下午 | 读不了（闭源） | 得啃几天 | 一个下午 |
 | 能不能下断点改了再跑 | 能，每一行 | 不能 | 能，但量大 | 能 |
 | 定位 | 读懂并 fork 出你自己的 agent | 生产级编程助手 | 终端结对编程 | 教学用最小 GPT |
@@ -36,9 +36,9 @@ nanoGPT 那一列是拿来对照的：它最小、可读，但教的是训一个
 
 我一直觉得 coding agent 被讲得太玄了。把 Claude Code、Cursor 这类工具扒到底，核心是一个 while 循环套着一个大模型，外加七八个让它能真正动手的工具。难的从来不是这个循环，而是循环跑进真实世界以后要兜的那些底。CoreCoder 就是把这个核心老老实实写出来的最小版本。
 
-引擎部分（循环、模型接口、上下文、工具、会话）去掉空行和注释是 1322 行。连最外层的 CLI、配置、打包一起算，整个包 25 个文件、物理 2816 行、净 2276 行，每个文件都短到能一口气读完。自 1161 行快照之后的增长都花在了看得见的功能上：plan mode、hooks、checkpoints，下文各有交代。
+引擎部分（循环、模型接口、上下文、工具、会话）去掉空行和注释是 1605 行。连最外层的 CLI、配置、打包一起算，整个包 28 个文件、物理 3241 行、净 2638 行，每个文件都短到能一口气读完。自 1161 行快照之后的增长都花在了看得见的功能上：plan mode、hooks、checkpoints，加上本 fork 新增的测试驱动闭环，下文各有交代。
 
-它真能跑：读写文件、执行 shell、派子 agent、分三层压上下文，还能随时把这趟烧掉的 token 和美元数报给你。任何要动你磁盘、要跑命令的调用，都会先停下来等你点头，227 个测试是绿的。但能跑不是为了劝你拿去日用，而是为了让这份「注释」不撒谎：一个解释 agent 怎么运作的范例，自己得真能运作。
+它真能跑：读写文件、执行 shell、派子 agent、分三层压上下文，还能随时把这趟烧掉的 token 和美元数报给你。任何要动你磁盘、要跑命令的调用，都会先停下来等你点头，247 个测试是绿的。但能跑不是为了劝你拿去日用，而是为了让这份「注释」不撒谎：一个解释 agent 怎么运作的范例，自己得真能运作。
 
 代码来自一次公开拆解。公开的源码分析里，Claude Code 这类生产级 agent 暴露出不少关键架构，我挑出最核心的一层，用尽量少的代码诚实地复写了一遍。所以读 CoreCoder，约等于读一份基于公开源码分析的「可运行注释版」：讲的是这类 agent 的核心思路，而它本身只是最小复写，就摆在你机器上，随你拆、随你改。
 
@@ -96,9 +96,10 @@ corecoder/
 ├── shell.py        POSIX shell 路由（Windows 走 Git Bash） 61 行
 ├── mcp.py          MCP stdio 客户端，接外部工具       237 行
 ├── prompt.py       系统提示词                          41 行
-├── cli.py          REPL + 斜杠命令 + 一次性模式        393 行
+├── cli.py          REPL + 斜杠命令 + 一次性模式        424 行
 ├── config.py       环境变量配置                        55 行
 ├── checkpoints.py  /undo 快照与回滚                      93 行
+├── tdd.py          /tdd 红绿修复循环                    65 行
 ├── demo.py         离线端到端演示                       101 行
 └── tools/
     ├── bash.py       shell + 危险命令闸 + cd 追踪      203 行
@@ -107,6 +108,8 @@ corecoder/
     ├── glob_tool.py  文件名匹配                         52 行
     ├── read.py       文件读取                           56 行
     ├── write.py      文件写入                           46 行
+    ├── run_tests.py  pytest 封装 + 结构化失败摘要       213 行
+    ├── coverage_tool.py  未覆盖行报告                  112 行
     ├── todo.py       agent 自维护的任务清单             79 行
     ├── agent.py      子 agent 派生                      72 行
     └── base.py       工具基类                           32 行
@@ -114,7 +117,7 @@ examples/
 └── plan_hooks_demo.py  离线 plan mode + hooks 演示（免 API key）
 ```
 
-八个工具：`bash`、`read_file`、`write_file`、`edit_file`、`glob`、`grep`、`todo_write`（agent 自己维护的任务清单）、`agent`（派子 agent）。其余都是包在引擎核心外面的 CLI 外壳、配置和打包。存在 `~/.corecoder/mcp.json` 时，里面的 MCP 服务器会以 `mcp__*` 工具的身份并进这八件里，下面有专门一节讲。
+十个工具：`bash`、`read_file`、`write_file`、`edit_file`、`glob`、`grep`、`run_tests`（pytest 封装、结构化失败摘要）、`coverage`（未覆盖行报告）、`todo_write`（agent 自己维护的任务清单）、`agent`（派子 agent）。其余都是包在引擎核心外面的 CLI 外壳、配置和打包。存在 `~/.corecoder/mcp.json` 时，里面的 MCP 服务器会以 `mcp__*` 工具的身份并进这十件里，下面有专门一节讲。
 
 ## 一个 while 循环就是 agent 的本体
 
@@ -196,6 +199,7 @@ README 只给方向，每条的代码细节第七篇接着讲。挑一个动手�
 /tokens          查看 token 用量和费用估算
 /diff            查看本次会话改过的文件
 /undo            撤销最近一次文件改动
+/tdd [路径]      跑测试，让 agent 自动修红轮次直到绿
 /plan            开关计划模式（只读摸底，再交出待批准的计划）
 /save  /sessions 保存 / 列出会话
 /mcp             MCP 服务器状态；/mcp reconnect <名字> 拉起挂掉的一台
@@ -267,6 +271,16 @@ REPL 里 `/plan` 开关计划模式。开着的时候，提示符变成 `(plan)`
 
 每个配好的服务器在启动时拉起一个子进程，握手、列出工具；每件工具都注册成 `mcp__<服务器>__<工具>`，钩子匹配和授权闸对它和内建工具一视同仁。MCP 工具不在只读名单里，模型要调，得先问过你。握手给十五秒，一次调用给六十秒；服务器挂了或者迟迟不应，那一次调用就以普通工具结果的形式报错，循环照常往下走。REPL 里的 `/mcp` 列出每台服务器的状态，`/mcp reconnect <名字>` 把挂掉的重新拉起：新进程、重新握手，agent 手里已有的工具不用重启就恢复可用。客户端只实现协议里工具那一小片（initialize、tools/list、tools/call），别的一概不碰，所以整块实现收在 `mcp.py` 一个文件里，两百四十行上下。没有 `mcp.json` 就没有 MCP，一切照旧。想直接跑起来的话，[`examples/mcp_filesystem.md`](examples/mcp_filesystem.md) 给了一个最小配置：MCP 官方的参考文件系统服务器，只暴露一个目录，照样过授权闸。
 
+## 测试驱动闭环（本 fork 新增）
+
+两件工具加一条命令，把 agent 变成一个小型 TDD 循环：
+
+- **`run_tests`** 封装 pytest，返回计数加每条失败一行「测试 - 消息」及其 `文件:行`，而不是整段原始输出。给 `related_to=src/foo.py` 就只跑匹配到的 `test_foo.py`；超过时限的运行会被杀掉而不是挂着。两件新工具都要执行代码，所以和 `bash` 一样过授权闸，不在只读名单里。
+- **`coverage`** 在 pytest-cov 下跑测试并报出每个文件的未覆盖行，agent 照着缺口补测试再复查（需要 `pip install pytest-cov`；没装时工具会明说，而不是甩一段 traceback）。
+- **`/tdd [路径]`** 就是循环本身：跑测试，红了就把失败摘要交给 agent 去修源码——绝不许改测试——一轮一轮来，默认最多五轮修复。绿了会报出用了几轮。
+
+[`examples/test_gate.json`](examples/test_gate.json) 是零代码版：一条 PostToolUse 钩子，每次编辑后自动跑相关测试，模型同一回合就能看到自己的失败并自己修。门禁要保持小——钩子跑过十秒会被跳过。
+
 ## 相关项目
 
 如果你读 CoreCoder 读得还顺，下面几个我做的 agent / LLM 系统方向的工具也许用得上：
@@ -279,7 +293,7 @@ REPL 里 `/plan` 开关计划模式。开着的时候，提示符变成 `(plan)`
 
 ## 贡献 / License
 
-动手之前先跑一遍 `pytest tests/ -q`（227 个测试）、`ruff check` 和 `compileall`，绿了再提。MIT License，欢迎 fork 拿去造更好的东西，能在 README 里留一句出处就更好。
+动手之前先跑一遍 `pytest tests/ -q`（247 个测试）、`ruff check` 和 `compileall`，绿了再提。MIT License，欢迎 fork 拿去造更好的东西，能在 README 里留一句出处就更好。
 
 ---
 

@@ -166,19 +166,32 @@ def test_missing_config_means_no_mcp(tmp_path, caplog):
 
 
 def test_shipped_examples_match_the_loader_contract():
-    # Every examples/*.json must stay loadable: mcpServers entries with a
-    # string command, list args and dict env when present.
+    # Every examples/*.json must stay loadable by the loader it belongs to:
+    # mcpServers entries with a string command, list args and dict env when
+    # present; Pre/PostToolUse entries with a string command and a string
+    # matcher when one is given.
     examples = list((Path(__file__).resolve().parent.parent / "examples").glob("*.json"))
     assert examples, "no example configs to pin"
     for path in examples:
         data = json.loads(path.read_text(encoding="utf-8"))
-        servers = data.get("mcpServers")
-        assert isinstance(servers, dict) and servers, f"{path.name}: mcpServers missing"
-        for name, spec in servers.items():
-            assert isinstance(name, str) and name, f"{path.name}: blank server name"
-            assert isinstance(spec.get("command"), str), f"{path.name}: {name} needs a command"
-            assert isinstance(spec.get("args", []), list), f"{path.name}: {name} args not a list"
-            assert isinstance(spec.get("env", {}), dict), f"{path.name}: {name} env not a dict"
+        if "mcpServers" in data:
+            servers = data["mcpServers"]
+            assert isinstance(servers, dict) and servers, f"{path.name}: mcpServers missing"
+            for name, spec in servers.items():
+                assert isinstance(name, str) and name, f"{path.name}: blank server name"
+                assert isinstance(spec.get("command"), str), f"{path.name}: {name} needs a command"
+                assert isinstance(spec.get("args", []), list), f"{path.name}: {name} args not a list"
+                assert isinstance(spec.get("env", {}), dict), f"{path.name}: {name} env not a dict"
+            continue
+        assert set(data) <= {"PreToolUse", "PostToolUse"} and data, \
+            f"{path.name}: neither an mcpServers nor a hooks config"
+        for event, entries in data.items():
+            assert isinstance(entries, list) and entries, f"{path.name}: {event} must be a non-empty list"
+            for entry in entries:
+                assert isinstance(entry, dict), f"{path.name}: {event} entry not an object"
+                assert isinstance(entry.get("command"), str) and entry["command"], \
+                    f"{path.name}: {event} entry needs a command"
+                assert isinstance(entry.get("matcher", ""), str), f"{path.name}: {event} matcher not a string"
 
 
 def test_broken_config_is_ignored_with_one_warning(tmp_path, caplog):

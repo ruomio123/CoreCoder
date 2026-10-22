@@ -1,0 +1,8 @@
+{
+  "PostToolUse": [
+    {
+      "matcher": "*",
+      "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.py) b=$(basename \"$f\" .py); t=$(find . -name \"test_$b.py\" -not -path \"*/.git/*\" 2>/dev/null | head -1); if [ -n \"$t\" ]; then cd \"$(dirname \"$t\")\" && python3 -m pytest \"$(basename \"$t\")\" -q --tb=line -rfE 2>&1 | tail -15; else echo \"no test_$b.py found; gate skipped\"; fi ;; *) : ;; esac"
+    }
+  ]
+}
