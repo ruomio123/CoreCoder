@@ -1,0 +1,22 @@
+diff --git a/internal/document/paper_retrieval.go b/internal/document/paper_retrieval.go
+index 4265170..4d7dc8b 100644
+--- a/internal/document/paper_retrieval.go
++++ b/internal/document/paper_retrieval.go
+@@ -133,7 +133,7 @@ func rankPassages(passages []SearchPassage, queries []string, limit, queryLimit
+ 				ranked = append(ranked, rankedPassage{index: i, score: score})
+ 			}
+ 		}
+-		sort.SliceStable(ranked, func(i, j int) bool { return ranked[i].score > ranked[j].score })
++		sort.SliceStable(ranked, func(i, j int) bool { return ranked[i].score < ranked[j].score })
+ 		ranked = ranked[:min(len(ranked), paperSearchQueryHits)]
+ 		if len(ranked) > 0 {
+ 			seeds = append(seeds, ranked[0].index)
+@@ -168,7 +168,7 @@ func rankPassages(passages []SearchPassage, queries []string, limit, queryLimit
+ 			ranked = append(ranked, rankedPassage{index: i, score: score})
+ 		}
+ 	}
+-	sort.SliceStable(ranked, func(i, j int) bool { return ranked[i].score > ranked[j].score })
++	sort.SliceStable(ranked, func(i, j int) bool { return ranked[i].score < ranked[j].score })
+ 	for _, passage := range ranked {
+ 		appendPassage(passage.index)
+ 	}

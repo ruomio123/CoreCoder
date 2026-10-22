@@ -1,0 +1,57 @@
+{
+  "note": "Eval bug set for the red-green fix loop. Mutation entries are SWE-smith-style controlled injections (small semantic edits, each verified to turn 1-5 tests red); revert entries reconstruct real historical bugs by reverting the fix's source side while keeping its regression tests. Sieve finding: SignalWatch's history is milestone-shaped, no fix commit reverts cleanly (see signalwatch_candidates.json), hence injections there.",
+  "repos": {
+    "signalwatch": "~/my_work/SignalWatch",
+    "corecoder": "~/my_work/CoreCoder"
+  },
+  "bugs": [
+    {
+      "id": "sw-bm25-order",
+      "type": "mutation",
+      "repo": "signalwatch",
+      "subject": "BM25 相关性排序方向反转（逐查询排序与 RRF 融合排序同时反转）",
+      "patch": "bugs/sw-bm25-order.patch",
+      "test_cmd": "go test ./internal/document/",
+      "red_tests": 3
+    },
+    {
+      "id": "sw-canonical-order",
+      "type": "mutation",
+      "repo": "signalwatch",
+      "subject": "段落规范化排序反转（Page/Chunk/Start 降序，破坏邻居选择与去重的确定性）",
+      "patch": "bugs/sw-canonical-order.patch",
+      "test_cmd": "go test ./internal/document/",
+      "red_tests": 3
+    },
+    {
+      "id": "sw-seed-coverage",
+      "type": "mutation",
+      "repo": "signalwatch",
+      "subject": "删除各查询最佳命中的优先入选（不同查询意图的覆盖保护失效）",
+      "patch": "bugs/sw-seed-coverage.patch",
+      "test_cmd": "go test ./internal/document/",
+      "red_tests": 4
+    },
+    {
+      "id": "cc-utf8-sessions",
+      "type": "revert",
+      "repo": "corecoder",
+      "subject": "真实历史 bug：损坏 UTF-8 会话文件导致加载崩溃（fix 1f201a2 的源码侧被 revert）",
+      "commit": "1f201a2",
+      "tests": ".",
+      "red_tests": 2
+    }
+  ],
+  "survived_mutations_not_used": [
+    "Split 80 词重叠移除 (internal/document/retrieval.go)",
+    "Split 页码 off-by-one (internal/document/retrieval.go)",
+    "Search 排序反转 (internal/document/retrieval.go)",
+    "terms 去掉小写归一 (internal/document/retrieval.go)",
+    "Passages 词边界阈值翻倍 (internal/document/passages.go)",
+    "matchKeywords 大小写敏感 (internal/matcher/service.go)",
+    "matchKeywords 前缀匹配 (internal/matcher/service.go)",
+    "幂等键长度校验 off-by-one (internal/agent/service.go)",
+    "digest 快照冻结守卫删除 (internal/digest/delivery_mysql.go)",
+    "邻居选择去掉同 chunk 约束 (internal/document/paper_retrieval.go)"
+  ]
+}

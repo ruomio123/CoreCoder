@@ -1,0 +1,263 @@
+{
+  "eligible": [],
+  "all": [
+    {
+      "commit": "134a907f1d67e0cb8a81b04356451a81d4f75639",
+      "subject": "Initial commit",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "23e2163d9f8023e140f125724d66f599d5183551",
+      "subject": "build: initialize Go module",
+      "reason": "source outside packages",
+      "files": [
+        "go.mod"
+      ]
+    },
+    {
+      "commit": "b5bb7e6f4043f2fdf285a125a6c22720b951e432",
+      "subject": "chore: add repository ignore rules",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "8b287312c096be385f4df7774211d353ad891665",
+      "subject": "first: add minimal API health endpoint",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "baa6bfe669aed3e8ac8e3254651ad7df7dfbe25f",
+      "subject": "second:add minimal worker process",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "d61423c69f443dd369cc958004cc7e4f10cb51a3",
+      "subject": "third:add config loading",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "cac888690663998c286b004013b539c8af8c797c",
+      "subject": "add:logger",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "d5f4840387c2ad287c1c1f7168b805d3c2f9a0c4",
+      "subject": "feat: add local dependency compose stack",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "6e89a254fca84edac9967dc4fb669af09b8897c8",
+      "subject": "feat: add infrastructure configuration",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "79eee8ffd7908d6827456fefe305e56eea35d4be",
+      "subject": "feat: initialize mysql connection",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "2c916ade3145378bf9eb88810912ba2389406209",
+      "subject": "feat:initialize redis connection",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "425b65633ce082881bebc61ccef6e9238ab1594e",
+      "subject": "feat:finish m0",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "3971056dfedd7f05ae6a287645d997cfa94379e3",
+      "subject": "feat: add database migrations and subscription schema",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "cea8e94d5ccf8a39a0e3a601dbab513ed818126f",
+      "subject": "m1:feat: establish Gin HTTP API foundation",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "9c23829c134e61e695bf63eebaa98f4cc8487999",
+      "subject": "m1:feat: upgrade source and subscription schema",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "1ef20206acd1b9ff5b4a1f7fe750a01351654ab1",
+      "subject": "m1:email register",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "7846fb72e16e10c219518611fb03c590ce4e83d5",
+      "subject": "m1:login and jwt",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "45fa005d1fd8b1bc3f8faca4b69385dac9b531e7",
+      "subject": "update:gitignore",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "1f59e311af1a959a4af031ed8dca0845ff634443",
+      "subject": "m1:usr profile",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "8a656e4cbff87410c17b820dd96a55eb7d249108",
+      "subject": "m1:finish",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "f2a52d22cbf665d5d613497e9d50fa642c63246a",
+      "subject": "finish m2,3",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "4b08fa4bc6e544e868ac65a4ad3fce2cc344cd11",
+      "subject": "finish:m4",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "17d0a2047dd0b854b2f761933bf510a2fa6a5dfe",
+      "subject": "v2",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "c4e81e628da8c3332f81c91c12b55613f6ef3e26",
+      "subject": "feat: add operator observability and verify V2 delivery pipeline",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "3cfaec154068272ec9862cf184dec51aee3196cd",
+      "subject": "fix error and update web",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "ac7b7d8a963c1b0c89147d2a2c867126fa52e77c",
+      "subject": "fix(ci): wait for MySQL TCP readiness before migrations",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "0ebfa8d446e0dc4feca97e9314103e38fd0ef684",
+      "subject": "chore: keep scripts and GitHub configuration local",
+      "reason": "source outside packages",
+      "files": [
+        "scripts/accept-ai-local.py",
+        "scripts/check-architecture.py"
+      ]
+    },
+    {
+      "commit": "137ce009156e86d81b3130898b5d2c3a2b3c1878",
+      "subject": "feat: add research assistants and named AI credentials",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "33badd5b61bfe67df85f2fc54ebcb61dbb15a580",
+      "subject": "feat: add fixed paper reports and resizable assistant workspaces",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "f227029adc68f56a764df029ae8bef71fea0eea6",
+      "subject": "refactor: remove operator roles and dedicated operations endpoints",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "f2f71a27ae06a8750d58755491abcb345a47c730",
+      "subject": "refactor: separate frontend deployment and retain runtime repository files",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "4780f382fca044b051af40f9ea778ee0dda198e2",
+      "subject": "docs: rewrite README with setup, architecture and usage",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "eaf9d0e81ef03b334869a75bcc2a9e32c4cce314",
+      "subject": "refactor: remove obsolete AI usage and lease tables",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "127bed9c0efa36530ed76fb6f049dda467a4d7b3",
+      "subject": "test: make agent regression tests reproducible",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "03739dbcc06cfbb24a34948f4829431c0ad20c0f",
+      "subject": "fix: stabilize agent reports and conversation history",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "68bc2d80d4c6c5e757d675fd237c9a27900de5da",
+      "subject": "feat: expose paper document preparation",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "53499ca13bc1116083fbac8e0f85886799b12437",
+      "subject": "feat: allow direct paper questions",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "be513afbede86a1374cb209d3c0453881891a300",
+      "subject": "feat: preserve context across paper questions",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "9ff3ca60234f5f68bb2e2362a2deb1a27483fa89",
+      "subject": "feat: expand paper outputs with bounded evidence review",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "5172acded64437c5df67c5dd322b5fc82cfbcdee",
+      "subject": "feat: recover paper output limits with one bounded repair",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "ddbe79023968c1896df458b979df655f13820246",
+      "subject": "feat: answer paper questions with structured evidence",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "abc36b495ba8cebfc037c8b33560a232c1f391e0",
+      "subject": "feat: complete paper answers with one bounded supplemental retrieval",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "9561467b2fbd4677536089a9763350045f5e03d6",
+      "subject": "feat: deepen single-paper reading with structured evidence and Markdown export",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "659932e942239c71521f61f77957c2cf5bc4d6fa",
+      "subject": "feat: generate bounded paper reproduction checklists",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "6377d4de0af8b32eaf8fbb5534a49412cec6169b",
+      "subject": "feat: recover paper workflows and preserve reviewed partial results",
+      "reason": "revert conflict: hint: with 'git add <paths>' or 'git rm <pa"
+    },
+    {
+      "commit": "61bd15d66e14d25570234865c558bfb8e83abc67",
+      "subject": "docs: refresh bilingual READMEs with feature screenshots",
+      "reason": "no source (tests/docs only)"
+    },
+    {
+      "commit": "fc81c536439757c6b07b1769155c237c03c46fc9",
+      "subject": "feat: introduce RabbitMQ-backed matching and digest workflows",
+      "reason": "revert breaks build",
+      "packages": [
+        "./cmd/ops/",
+        "./cmd/worker/",
+        "./internal/agent/",
+        "./internal/ai/",
+        "./internal/collector/",
+        "./internal/digest/",
+        "./internal/digestschedule/",
+        "./internal/matcher/",
+        "./internal/paper/",
+        "./internal/platform/config/",
+        "./internal/platform/document/",
+        "./internal/subscription/",
+        "./internal/taskqueue/",
+        "./internal/user/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+diff --git a/internal/document/paper_retrieval.go b/internal/document/paper_retrieval.go
+index 4265170..07b12e0 100644
+--- a/internal/document/paper_retrieval.go
++++ b/internal/document/paper_retrieval.go
+@@ -53,7 +53,7 @@ func rankPassages(passages []SearchPassage, queries []string, limit, queryLimit
+ 	sort.Slice(ordered, func(i, j int) bool {
+ 		a, b := ordered[i], ordered[j]
+ 		if a.Page != b.Page {
+-			return a.Page < b.Page
++			return a.Page > b.Page
+ 		}
+ 		if a.Chunk != b.Chunk {
+ 			return a.Chunk < b.Chunk

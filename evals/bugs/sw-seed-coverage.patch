@@ -1,0 +1,15 @@
+diff --git a/internal/document/paper_retrieval.go b/internal/document/paper_retrieval.go
+index 4265170..a0b4afc 100644
+--- a/internal/document/paper_retrieval.go
++++ b/internal/document/paper_retrieval.go
+@@ -150,10 +150,6 @@ func rankPassages(passages []SearchPassage, queries []string, limit, queryLimit
+ 			out = append(out, corpus[index])
+ 		}
+ 	}
+-	// Protect coverage of distinct query intents before adding any context.
+-	for _, index := range seeds {
+-		appendPassage(index)
+-	}
+ 	for _, index := range seeds {
+ 		seed := corpus[index]
+ 		for _, neighbor := range []int{index - 1, index + 1} {
