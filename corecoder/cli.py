@@ -284,6 +284,15 @@ def _repl(agent: Agent, config: Config):
             if left:
                 console.print(f"[dim]{left} more checkpoint(s) on the stack.[/dim]")
             continue
+        if user_input == "/tdd" or user_input.startswith("/tdd "):
+            try:
+                _tdd(agent, user_input[4:].strip() or ".")
+            except KeyboardInterrupt:
+                console.print("\n[yellow]Interrupted.[/yellow]")
+            except Exception as e:  # noqa: BLE001
+                # a broken loop must not take the REPL down with it
+                console.print(f"\n[red]Error: {e}[/red]")
+            continue
         if user_input == "/sessions":
             sessions = list_sessions()
             if not sessions:
@@ -332,6 +341,27 @@ def _repl(agent: Agent, config: Config):
             console.print(f"\n[red]Error: {e}[/red]")
 
 
+def _tdd(agent: Agent, target: str):
+    """The /tdd command: run the suite, let the agent fix red rounds until green."""
+    from .tdd import fix_until_green
+
+    def on_token(tok):
+        print(tok, end="", flush=True)
+
+    def on_tool(name, kwargs):
+        console.print(f"\n[dim]> {name}({_brief(kwargs)})[/dim]")
+
+    console.print(f"[dim]red-green loop on {target} (Ctrl+C aborts)...[/dim]")
+    report = fix_until_green(agent, tests=target, on_token=on_token, on_tool=on_tool)
+    if report["status"] == "green":
+        console.print(f"\n[green]Green after {report['fix_rounds']} fix round(s).[/green]")
+    elif report["status"] == "red":
+        console.print(f"\n[red]Still red after {report['fix_rounds']} fix round(s). Last run:[/red]")
+        console.print(report["output"])
+    else:
+        console.print(f"[red]{report['error']}[/red]")
+
+
 def _mcp(arg: str):
     """The /mcp command: server states, or `reconnect <name>` to revive one."""
     from . import mcp
@@ -374,6 +404,7 @@ def _show_help():
         "  /compact       Compress conversation context\n"
         "  /diff          Show files modified this session\n"
         "  /undo          Revert the most recent file change\n"
+        "  /tdd [path]    Run tests and let the agent fix red rounds until green\n"
         "  /plan          Toggle plan mode: read-only, then a plan to approve\n"
         "  /save          Save session to disk\n"
         "  /sessions      List saved sessions\n"
