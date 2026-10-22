@@ -3,7 +3,7 @@
 from corecoder import Agent
 from corecoder.demo import ScriptedLLM
 from corecoder.llm import LLM, LLMResponse, ToolCall
-from corecoder.tdd import fix_until_green
+from corecoder.tdd import fix_until_green, run_cmd_suite
 from tests.conftest import repl_with
 
 # deliberately a different length than _BUGGY: an edit that keeps the size can
@@ -80,3 +80,44 @@ def test_tdd_slash_command_runs_the_loop(monkeypatch, capsys, tmp_path):
     out = capsys.readouterr().out
     assert "Green after 1 fix round(s)" in out
     assert (tmp_path / "calc.py").read_text() == _FIXED
+
+
+# --- test_cmd: the loop over an arbitrary shell command (go test, ...) ---
+
+def test_cmd_exit_zero_without_pass_evidence_is_not_green():
+    # go test on a package with no test files exits 0 but proves nothing
+    green, out = run_cmd_suite(r"printf '?   pkg [no test files]\n'")
+    assert not green
+    assert "[no test files]" in out
+
+
+def test_cmd_green_on_go_style_pass():
+    green, _ = run_cmd_suite(r"printf 'ok  \tsignalwatch/internal/document\t0.01s\n'")
+    assert green
+
+
+def test_cmd_red_on_nonzero_exit():
+    green, _ = run_cmd_suite("printf -- '--- FAIL: TestX (0.00s)\\n'; exit 1")
+    assert not green
+
+
+def test_fix_loop_with_custom_cmd(tmp_path):
+    # go-style suite: red until the agent's write flips the marker file
+    marker = tmp_path / "fixed.marker"
+    script = [
+        LLMResponse(
+            content="Fixing.",
+            tool_calls=[ToolCall(
+                id="c1", name="write_file",
+                arguments={"file_path": str(marker), "content": "fixed"},
+            )],
+        ),
+        LLMResponse(content="Fixed."),
+    ]
+    cmd = (
+        f"test -f {marker} && printf 'ok  \tinternal/pkg\t0.01s\\n' "
+        f"|| {{ printf -- '--- FAIL: TestA (0.00s)\\n'; exit 1; }}"
+    )
+    report = fix_until_green(Agent(llm=ScriptedLLM(script)), test_cmd=cmd)
+    assert report["status"] == "green"
+    assert report["fix_rounds"] == 1
